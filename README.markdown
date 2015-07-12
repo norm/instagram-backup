@@ -52,3 +52,12 @@ Download a local copy of all of your instagram photos including their metadata
 
 
 3.  *Backup your photos.*
+
+    Run the following script in your Terminal:
+
+    ```
+    python backup.py
+    ```
+
+    This will create a directory called `backup` and fetch all of your
+    Instagram photos.
