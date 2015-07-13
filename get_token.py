@@ -9,8 +9,8 @@ from flask import (
 from instagram.client import InstagramAPI
 
 DEBUG = True
-ID = os.getenv('INSTAGRAM_CLIENT_ID')
-SECRET = os.getenv('INSTAGRAM_SECRET')
+ID = os.getenv('INSTAGRAM_CLIENT_ID', None)
+SECRET = os.getenv('INSTAGRAM_SECRET', None)
 URI = 'http://localhost:4726/'
 
 instagram = InstagramAPI(
@@ -36,4 +36,7 @@ def homepage():
 
 
 if __name__ == "__main__":
+    if  ID is None or SECRET is None:
+        sys.exit("Requires INSTAGRAM_CLIENT_ID and INSTAGRAM_SECRET environment variables.")
+
     app.run(port=4726, debug=True)
