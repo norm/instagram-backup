@@ -20,13 +20,15 @@ def save_image(image):
 
     print 'Fetching [%s] %s' % ( image_id, image_name )
 
-    # save the JPG itself
     image_url = image['images']['standard_resolution']['url']
     image_filename = '%s/%s.jpg' % ( SAVE_DIR, image_id )
-    response = requests.get(image_url, stream=True)
-    with open(image_filename, 'wb') as image_file:
-        shutil.copyfileobj(response.raw, image_file)
-    del response
+
+    # save the JPEG if we don't already have it
+    if not os.path.isfile(image_filename):
+        response = requests.get(image_url, stream=True)
+        with open(image_filename, 'wb') as image_file:
+            shutil.copyfileobj(response.raw, image_file)
+        del response
 
     # save the data as JSON
     data_filename = '%s/%s.json' % ( SAVE_DIR, image_id )
