@@ -44,6 +44,11 @@ while max_id is not None:
 
     data = requests.get(url)
     response = data.json()
-    max_id = response['pagination']['next_max_id']
+
     for image in response['data']:
         save_image(image)
+
+    try:
+        max_id = response['pagination']['next_max_id']
+    except KeyError:
+        max_id = None
