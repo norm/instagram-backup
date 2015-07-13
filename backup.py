@@ -11,6 +11,14 @@ FEED_URI = 'https://api.instagram.com/v1/users/%s/media/recent/?access_token=%s'
 SAVE_DIR = 'backup'
 
 
+def download_file(url, filename):
+    # only download the file if it doesn't already exist
+    if not os.path.isfile(filename):
+        response = requests.get(url, stream=True)
+        with open(filename, 'wb') as new_file:
+            shutil.copyfileobj(response.raw, new_file)
+        del response
+
 def save_image(image):
     image_id = image['link'].rsplit('/')[4]
     try:
@@ -22,13 +30,12 @@ def save_image(image):
 
     image_url = image['images']['standard_resolution']['url']
     image_filename = '%s/%s.jpg' % ( SAVE_DIR, image_id )
+    download_file(image_url, image_filename)
 
-    # save the JPEG if we don't already have it
-    if not os.path.isfile(image_filename):
-        response = requests.get(image_url, stream=True)
-        with open(image_filename, 'wb') as image_file:
-            shutil.copyfileobj(response.raw, image_file)
-        del response
+    if image['type'] == 'video':
+        video_url = image['videos']['standard_resolution']['url']
+        video_filename = '%s/%s.mp4' % ( SAVE_DIR, image_id )
+        download_file(video_url, video_filename)
 
     # save the data as JSON
     data_filename = '%s/%s.json' % ( SAVE_DIR, image_id )
