@@ -13,7 +13,12 @@ SAVE_DIR = 'backup'
 
 def save_image(image):
     image_id = image['link'].rsplit('/')[4]
-    print 'Fetching [%s] %s' % ( image_id, image['caption']['text'] )
+    try:
+        image_name = image['caption']['text']
+    except TypeError:
+        image_name = ''
+
+    print 'Fetching [%s] %s' % ( image_id, image_name )
 
     # save the JPG itself
     image_url = image['images']['standard_resolution']['url']
