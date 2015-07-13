@@ -8,6 +8,15 @@ Download a local copy of all of your instagram photos including their metadata
 
 0.  *Setup python requirements.*
 
+    This is written in python, and requires a couple of libraries to be
+    installed before it will work.
+
+    If you are familiar with python programming, set up a virtualenv and
+    install the requirements.
+
+    If you don't know python, this command should be enough on OS X and Linux
+    computers:
+
     ```
     sudo pip install -r requirements.txt
     ```
@@ -21,9 +30,15 @@ Download a local copy of all of your instagram photos including their metadata
     Enter anything you like for the name, description and website URL.
     The *Redirect URL* should be `http://localhost:4726/`.
 
+    ![Creating your application](https://raw.github.com/norm/instagram-backup/master/create.png)
+
     Once created, the information of your application will contain two
-    strings, labelled *Client ID* and *Client Secret*. Copy and paste
-    them into your terminal, like so:
+    strings, labelled *Client ID* and *Client Secret*, like so (this image is
+    just for illustration, the keys shown won't work):
+
+    ![Your client keys](https://raw.github.com/norm/instagram-backup/master/keys.png)
+
+    Copy and paste them into your terminal, like so:
 
     ```
     export INSTAGRAM_CLIENT_ID=<your client id>
@@ -47,8 +62,8 @@ Download a local copy of all of your instagram photos including their metadata
     to get your token — this will take you to Instagram to authorise,
     then present you with two more values to export to your Terminal.
 
-    Stop the previous command by pressing Control and C at the same time.
-    Then copy and paste the values from the browser.
+    Stop the previous command in your Terminal by pressing Control and C at
+    the same time. Then copy and paste the values from the browser.
 
 
 3.  *Backup your photos.*
