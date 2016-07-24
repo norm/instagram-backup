@@ -3,7 +3,6 @@ import os
 import requests
 import shutil
 import sys
-import time
 
 USER_TOKEN = os.getenv('INSTAGRAM_TOKEN', None)
 FEED_URI = 'https://api.instagram.com/v1/users/self/media/recent/'
@@ -18,6 +17,7 @@ def download_file(url, filename):
             shutil.copyfileobj(response.raw, new_file)
         del response
 
+
 def save_image(image):
     image_id = image['link'].rsplit('/')[4]
     try:
@@ -25,19 +25,19 @@ def save_image(image):
     except TypeError:
         image_name = ''
 
-    print 'Fetching [%s] %s' % ( image_id, image_name )
+    print 'Fetching [%s] %s' % (image_id, image_name)
 
     image_url = image['images']['standard_resolution']['url']
-    image_filename = '%s/%s.jpg' % ( SAVE_DIR, image_id )
+    image_filename = '%s/%s.jpg' % (SAVE_DIR, image_id)
     download_file(image_url, image_filename)
 
     if image['type'] == 'video':
         video_url = image['videos']['standard_resolution']['url']
-        video_filename = '%s/%s.mp4' % ( SAVE_DIR, image_id )
+        video_filename = '%s/%s.mp4' % (SAVE_DIR, image_id)
         download_file(video_url, video_filename)
 
     # save the data as JSON
-    data_filename = '%s/%s.json' % ( SAVE_DIR, image_id )
+    data_filename = '%s/%s.json' % (SAVE_DIR, image_id)
     with open(data_filename, 'w') as data_file:
         json.dump(image, data_file, sort_keys=True, indent=4)
 

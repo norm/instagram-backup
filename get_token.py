@@ -44,7 +44,8 @@ def homepage():
 
 
 if __name__ == "__main__":
-    if  ID is None or SECRET is None:
-        sys.exit("Requires INSTAGRAM_CLIENT_ID and INSTAGRAM_SECRET environment variables.")
+    if ID is None or SECRET is None:
+        sys.exit('Requires INSTAGRAM_CLIENT_ID and INSTAGRAM_SECRET '
+                 'environment variables.')
 
     app.run(port=4726, debug=True)
