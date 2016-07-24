@@ -1,4 +1,6 @@
 import os
+import sys
+import requests
 
 from flask import (
     Flask,
@@ -6,18 +8,10 @@ from flask import (
     request,
 )
 
-from instagram.client import InstagramAPI
 
-DEBUG = True
 ID = os.getenv('INSTAGRAM_CLIENT_ID', None)
 SECRET = os.getenv('INSTAGRAM_SECRET', None)
-URI = 'http://localhost:4726/'
 
-instagram = InstagramAPI(
-    client_id=ID,
-    client_secret=SECRET,
-    redirect_uri=URI
-)
 app = Flask(__name__)
 app.config.from_object(__name__)
 
@@ -29,10 +23,24 @@ def homepage():
     if code is None:
         return render_template('homepage.html', client_id=ID)
     else:
-        token, user_data = \
-            instagram.exchange_code_for_access_token(code)
-        user_id = user_data['id']
-        return render_template('code.html', token=token, user_id=user_id)
+        api_response = requests.post(
+            'https://api.instagram.com/oauth/access_token',
+            data={
+                'client_id': ID,
+                'client_secret': SECRET,
+                'code': code,
+                'grant_type': 'authorization_code',
+                'redirect_uri': 'http://localhost:4726/',
+            }
+        )
+
+        json_data = api_response.json()
+
+        return render_template(
+            'code.html',
+            token=json_data['access_token'],
+            user_id=json_data['user']['id'],
+        )
 
 
 if __name__ == "__main__":
