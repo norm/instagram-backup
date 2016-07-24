@@ -5,9 +5,8 @@ import shutil
 import sys
 import time
 
-USER_ID = os.getenv('INSTAGRAM_USER_ID', None)
 USER_TOKEN = os.getenv('INSTAGRAM_TOKEN', None)
-FEED_URI = 'https://api.instagram.com/v1/users/%s/media/recent/?access_token=%s'
+FEED_URI = 'https://api.instagram.com/v1/users/self/media/recent/'
 SAVE_DIR = 'backup'
 
 
@@ -43,12 +42,12 @@ def save_image(image):
         json.dump(image, data_file, sort_keys=True, indent=4)
 
 
-if  USER_ID is None or USER_TOKEN is None:
-    sys.exit("Requires INSTAGRAM_USER_ID and INSTAGRAM_USER_TOKEN environment variables.")
+if USER_TOKEN is None:
+    sys.exit("Requires INSTAGRAM_USER_TOKEN environment variable.")
 
 max_id = 0
 while max_id is not None:
-    url = FEED_URI % ( USER_ID, USER_TOKEN )
+    url = '%s?access_token=%s' % (FEED_URI, USER_TOKEN)
     if max_id:
         url += '&max_id=%s' % max_id
 
