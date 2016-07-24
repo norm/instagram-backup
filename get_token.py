@@ -27,7 +27,7 @@ def homepage():
     code = request.args.get('code', None)
 
     if code is None:
-        return render_template('homepage.html')
+        return render_template('homepage.html', client_id=ID)
     else:
         token, user_data = \
             instagram.exchange_code_for_access_token(code)
